@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
-const BlogList = ({ blogs, title }) => {
+import 'firebase/firestore';
+import 'firebase/auth';
+import { firestore } from './firebase.config'
+import BlogItem from './BlogItem';
+
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+
+
+
+const BlogList = () => {
+    const blogsRef = firestore.collection('blogs');
+    const query = blogsRef.orderBy('createdAt', 'desc').limit(25);
+
+    const [blogs] = useCollectionData(query, { idField: 'id' });
 
     return (
-        <div className="blog-list">
-            <h2>{title}</h2>
-            {blogs.map(blog => (
-                <div className="blog-preview" key={blog.id}>
-                    <Link to={`/blogs/${blog.id}`}>
-                        <h2>{blog.title}</h2>
-                        <p>{blog.author}</p>
-                    </Link>
-                </div>
-            ))}
+        <div className="content">
+            <div className="blog-container">
+                {blogs && blogs.map(blog => {
+                    return (
+                        <BlogItem key={blog.id} blog={blog} />
+                    )
+                })}
+            </div>
         </div>
-    );
+    )
 }
 
 export default BlogList;

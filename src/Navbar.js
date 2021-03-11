@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
+import SignOut from './SignOut';
 
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <h1>My Blog Page</h1>
+            <Link to="/"><h4>Home</h4></Link>
             <div className="links">
-                <Link to="/">Home</Link>
-                <Link to="/create">Create new Blog Post</Link>
+                <Link to="/create"><button className="add">New Post</button></Link>
+                <SignOut />
             </div>
         </nav>
     );

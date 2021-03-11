@@ -1,63 +1,50 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { auth, firestore } from './firebase.config'
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 
 const Create = () => {
+    const blogsRef = firestore.collection('blogs');
+
     const [title, setTitle] = useState('');
-    const [body, setBody] = useState('');
-    const [author, setAuthor] = useState('mario');
-    const [isPending, setIsPending] = useState(false);
     const history = useHistory();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const blog = { title, body, author };
 
-        setIsPending(true);
+        const { uid } = auth.currentUser;
 
-        fetch('http://localhost:8000/blogs', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(blog)
-        }).then(() => {
-            console.log('new blog added');
-            setIsPending(false);
-            history.push('/');
-        })
+        await blogsRef.add({
+            text: title,
+            author: auth.currentUser.displayName,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            uid
+        });
+        history.push('/');
     }
 
     return (
-        <div>
-            <h2>Add a New Blog</h2>
+        <div className="form-content">
             <form onSubmit={handleSubmit}>
-                <label>Blog Title:</label>
+                <p>Add a New Blog</p>
+
                 <input
                     type="text"
                     required
                     value={title}
+                    placeholder="post"
                     onChange={(e) => setTitle(e.target.value)}
                 />
-                <label>Blog Body:</label>
-                <textarea
+                <input
+                    type="text"
                     required
-                    value={body}
-                    onChange={(e) => setBody(e.target.value)}
-                >
-                </textarea>
-                <label>Blog Author:</label>
-                <select
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                >
-                    <option value="mario">mario</option>
-                    <option value="yoshi">yoshi</option>
-                </select>
-                {!isPending && <button>Add Blog</button>}
-                {isPending && <button disabled>Adding Blog..</button>}
-                <p>{title}</p>
-                <p>{body}</p>
-                <p>{author}</p>
-
+                    value={auth.currentUser.displayName}
+                    placeholder="author"
+                />
+                <button className="btn-add">Add Blog</button>
             </form>
         </div>
     );
