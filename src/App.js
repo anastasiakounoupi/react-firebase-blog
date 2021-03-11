@@ -1,23 +1,43 @@
 import Navbar from './Navbar';
-import Home from './Home';
 import Create from './Create';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import BlogDetails from './BlogDetails';
 import NotFound from './NotFound';
+import SignIn from './SignIn';
+import BlogList from './BlogList';
 
 
-function App() {
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+
+const auth = firebase.auth();
+
+
+const App = () => {
+  const [user] = useAuthState(auth);
+
   return (
     <Router>
       <div className="App">
         <Navbar />
-        <div className="content">
-          <Switch>
-            <Route path='/' exact component={Home} />
-            <Route path='/create' exact component={Create} />
-            <Route path='/blogs/:id' exact component={BlogDetails} />
-            <Route path='*' component={NotFound} />
-          </Switch>
+
+        <div className="header">
+          <div className="heading">
+            <p >Welcome to the Blog</p>
+            <p className="heading-sm">This blog was created with React and Firebase</p>
+          </div>
+        </div>
+        <div>
+          {user ?
+            <Switch>
+              <Route path='/' exact component={BlogList} />
+              <Route path='/create' exact component={Create} />
+              <Route path='*' component={NotFound} />
+            </Switch>
+            : <SignIn />}
         </div>
       </div>
     </Router>
