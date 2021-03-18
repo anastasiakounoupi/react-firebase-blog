@@ -4,6 +4,8 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import { firestore } from './firebase.config'
 import BlogItem from './BlogItem';
+import { Link } from 'react-router-dom';
+
 
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
@@ -16,13 +18,17 @@ const BlogList = () => {
     const [blogs] = useCollectionData(query, { idField: 'id' });
 
     return (
-        <div className="content">
-            <div className="blog-container">
-                {blogs && blogs.map(blog => {
-                    return (
-                        <BlogItem key={blog.id} blog={blog} />
-                    )
-                })}
+        <div>
+            <Link to="/create"><button className="add add__plus">+</button></Link>
+            <div className="content">
+
+                <div className="blog-container">
+                    {blogs && blogs.map(blog => {
+                        return (
+                            <BlogItem key={blog.id} blog={blog} />
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )

@@ -40,9 +40,9 @@ a:hover{
     display: flex;
     flex-direction: column;
     height: 60vh;
-    background-image: linear-gradient(to right bottom, #bdc3c7, #2c3e50);
+    background-image: linear-gradient(to right bottom, rgba(189, 195, 199, .6), rgba(44, 62, 80, .6)), url(./images/friends.jpg);
     background-size: cover;
-    background-position: top;
+    background-position: center;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     align-items: center;
 
@@ -78,10 +78,11 @@ a:hover{
 
 .content{
     font-size: 1.6rem;
-    margin-top: 5vh;
+    /* margin-top: 5vh; */
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
    
 }
 
@@ -158,6 +159,7 @@ button{
     border-radius: 25px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     font-size: 1.6rem;
+    margin-top: 5vh;
 }
 
 .add{
@@ -167,6 +169,14 @@ button{
     border-radius: 25px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     font-size: 1.6rem;
+}
+
+.add__plus{
+    margin-top: 5vh;
+    margin-left: 5vw;
+    padding: 1rem 1.5rem;
+    font-size: 1.6rem;
+    
 }
 
 .delete{
